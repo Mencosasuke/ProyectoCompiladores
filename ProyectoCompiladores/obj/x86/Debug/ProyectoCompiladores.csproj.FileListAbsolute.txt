@@ -1,0 +1,7 @@
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\bin\Debug\ProyectoCompiladores.exe
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\bin\Debug\ProyectoCompiladores.pdb
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Form1.resources
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Properties.Resources.resources
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.csproj.GenerateResource.Cache
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.exe
+C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.pdb
