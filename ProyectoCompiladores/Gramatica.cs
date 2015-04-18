@@ -90,7 +90,6 @@ namespace ProyectoCompiladores
                 // Obtiene la variable de la linea
                 Elemento variable = new Elemento(l.Substring(0, l.IndexOf(":")).Trim(), TipoDato.variable);
                 // Si la variable ya existe en la lista de producciones, la ignora
-                //if(!producciones.Exists(p => p.variable.Valor.Equals(variable.Valor))){
                 if(!producciones.Any(p => p.variable.Valor.Equals(variable.Valor)))
                 {
                     produccion.variable = variable;

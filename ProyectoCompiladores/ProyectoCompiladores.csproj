@@ -54,6 +54,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Gramatica.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Produccion.cs" />
     <Compile Include="ProduccionList.cs" />
     <Compile Include="Program.cs" />
