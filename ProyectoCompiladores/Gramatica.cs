@@ -74,6 +74,11 @@ namespace ProyectoCompiladores
             return terminales;
         }
 
+        /// <summary>
+        /// Obtiene las producciones de cada variable
+        /// </summary>
+        /// <param name="lineas"></param>
+        /// <returns></returns>
         public List<Produccion> obtenerProducciones(List<String> lineas){
             // Lista de producciones
             List<Produccion> producciones = new List<Produccion>();
