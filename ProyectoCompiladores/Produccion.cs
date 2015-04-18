@@ -7,11 +7,11 @@ namespace ProyectoCompiladores
 {
     class Produccion
     {
-        public String variable { get; set; }
-        public List<String> producciones { get; set; }
-
-        public Produccion(){
-            producciones = new List<String>();
+        public Produccion()
+        {
+            this.elementos = new List<Elemento>();
         }
+        // Lista de elementos que componen la producción
+        public IList<Elemento> elementos { get; set; }
     }
 }

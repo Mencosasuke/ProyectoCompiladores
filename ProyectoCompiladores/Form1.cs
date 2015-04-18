@@ -60,7 +60,7 @@ namespace ProyectoCompiladores
             List<String> terminales = gramatica.obtenerTerminales(lineas);
 
             // Se llama al método para obtener las producciones por variable de la gramatica
-            List<Produccion> producciones = gramatica.obtenerProducciones(lineas);
+            List<ProduccionList> producciones = gramatica.obtenerProducciones(lineas);
 
 
 
@@ -104,8 +104,8 @@ namespace ProyectoCompiladores
 
             // String para imprimir las producciones de la gramatica
             String lineaProducciones = String.Format("Producciones: {0}", Environment.NewLine);
-            foreach (Produccion p in producciones){
-                lineaProducciones += String.Format("{0} -> {1}{2}", p.variable, String.Join(", ", p.producciones), Environment.NewLine);
+            foreach (ProduccionList p in producciones){
+                lineaProducciones += String.Format("{0} -> {1}{2}", p.variable.valor, String.Join(", ", p.producciones), Environment.NewLine);
             }
 
             // Se añade toda la información obtenida al StringBuilder Principal

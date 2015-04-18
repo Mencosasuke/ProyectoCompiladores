@@ -7,3 +7,9 @@ C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompi
 C:\Users\usuario\Documents\David\Personal\UMG\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.pdb
 C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.exe
 C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.pdb
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\bin\Debug\ProyectoCompiladores.exe
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\bin\Debug\ProyectoCompiladores.pdb
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.csprojResolveAssemblyReference.cache
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Form1.resources
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Properties.Resources.resources
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.csproj.GenerateResource.Cache
