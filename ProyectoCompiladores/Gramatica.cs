@@ -15,7 +15,7 @@ namespace ProyectoCompiladores
         /// </summary>
         /// <param name="filePath">Ruta del archivo a leer.</param>
         /// <returns>Retorna la lista de lineas obtenidas del archivo.</returns>
-        public List<String> organizaArchivo(String filePath){
+        public List<String> OrganizaArchivo(String filePath){
             try{
                 String linea;
                 List<String> lineas = new List<String>();
@@ -33,17 +33,17 @@ namespace ProyectoCompiladores
         }
 
         /// <summary>
-        /// Obtiene todas las variables de la gramática y las almacena en una lista tipo String
+        /// Obtiene todas las variables de la gramática y las almacena en una lista Tipo Elemento
         /// </summary>
         /// <param name="lineas">Lista de las lineas que contiene el archivo .txt</param>
         /// <returns>Lista de las variables</returns>
-        public List<String> obtenerVariables(List<String> lineas){
-            List<String> variables = new List<String>(); // Lista de todas las variables contenidas en el archivo
+        public IList<Elemento> ObtenerVariables(List<String> lineas){
+            List<Elemento> variables = new List<Elemento>(); // Lista de todas las variables contenidas en el archivo
             foreach (String linea in lineas)
             {
                 // Obtiene la subcadena antes de los dos puntos (la variable) y la añade
                 // a la lista de variables, sí y solo sí aún no existe en dicha lista
-                String variable = linea.Substring(0, linea.IndexOf(":")).Trim();
+                Elemento variable = new Elemento(linea.Substring(0, linea.IndexOf(":")).Trim(), TipoDato.variable);
                 if(!variables.Contains(variable)){
                     variables.Add(variable);
                 }
@@ -57,8 +57,8 @@ namespace ProyectoCompiladores
         /// </summary>
         /// <param name="lineas">Lista de las lineas que contiene el archivo .txt</param>
         /// <returns>Lista de las terminales</returns>
-        public List<String> obtenerTerminales(List<String> lineas){
-            List<String> terminales = new List<String>();
+        public IList<Elemento> ObtenerTerminales(List<String> lineas){
+            IList<Elemento> terminales = new List<Elemento>();
             Regex regex = new Regex(@"\'(?<token>[^\|\']+)\'");
             foreach (String l in lineas){
                 bool flag = regex.IsMatch(l);
@@ -66,8 +66,9 @@ namespace ProyectoCompiladores
                               where m.Groups["token"].Success
                               select m.Groups["token"].Value).ToList();
                 foreach (Object o in result){
-                    if (!terminales.Contains(o.ToString())){
-                        terminales.Add(o.ToString());
+                    Elemento elemento = new Elemento(o.ToString(), TipoDato.terminal);
+                    if (!terminales.Contains(elemento)){
+                        terminales.Add(elemento);
                     }
                 }
             }
@@ -79,24 +80,25 @@ namespace ProyectoCompiladores
         /// </summary>
         /// <param name="lineas"></param>
         /// <returns></returns>
-        public List<ProduccionList> obtenerProducciones(List<String> lineas){
+        public IList<ProduccionList> ObtenerProducciones(List<String> lineas){
             // Lista de producciones
-            List<ProduccionList> producciones = new List<ProduccionList>();
+            IList<ProduccionList> producciones = new List<ProduccionList>();
             // Recorre cada linea del txt para obtener las producciones
-            foreach (String l in lineas){
+            foreach (String l in lineas)
+            {
                 ProduccionList produccion = new ProduccionList();
                 // Obtiene la variable de la linea
-                Elemento variable = new Elemento();
-                variable.tipo = TipoDato.variable;
-                variable.valor = l.Substring(0, l.IndexOf(":")).Trim();
+                Elemento variable = new Elemento(l.Substring(0, l.IndexOf(":")).Trim(), TipoDato.variable);
                 // Si la variable ya existe en la lista de producciones, la ignora
-                if(!producciones.Exists(p => p.variable.valor.Equals(variable.valor))){
+                //if(!producciones.Exists(p => p.variable.Valor.Equals(variable.Valor))){
+                if(!producciones.Any(p => p.variable.Valor.Equals(variable.Valor)))
+                {
                     produccion.variable = variable;
                     producciones.Add(produccion);
                 }
 
                 // Obtiene de la lista la producción que corresponde a la variable de la lina actual
-                ProduccionList produccionAux = producciones.Where(p => p.variable.valor.Equals(variable.valor)).FirstOrDefault();
+                ProduccionList produccionAux = producciones.Where(p => p.variable.Valor.Equals(variable.Valor)).FirstOrDefault();
 
                 // Linea auxiliar que obtiene las producciones de la variable de la linea actual
                 String lineaAux = l.Split(":".ToCharArray())[1].Trim();
@@ -104,16 +106,16 @@ namespace ProyectoCompiladores
                 // Separa las producciones de la linea actual y las guarda en la lista
                 // de producciones de la variable a que corresponden
                 List<String> splitProducciones = lineaAux.Split("|".ToCharArray()).ToList();
-                foreach (String p in splitProducciones){
-
-                    // Lista de elementos que componen la producción
+                foreach (String p in splitProducciones)
+                {
+                    // Lista de Elementos que componen la producción
                     IList<Elemento> elementos = new List<Elemento>();
 
                     // Arreglo de caracteres que componen la producción
                     Char[] contenidoProduccion = p.Trim().ToCharArray();
 
                     // Por cada caracter dentro de la producción, verifica si es una variable o un terminal,
-                    // si es terminal, lo añade como un elemento nuevo de la lista de elementos que compone
+                    // si es terminal, lo añade como un elemento nuevo de la lista de Elementos que compone
                     // la pruducción, si no, lee el terminal completo y lo añade como nuevo elemento de la producción.
                     for (int i = 0; i < contenidoProduccion.Length; i++)
                     {
@@ -123,9 +125,7 @@ namespace ProyectoCompiladores
                         {
                             if (caracter != ' ')
                             {
-                                Elemento elemento = new Elemento();
-                                elemento.valor = caracter.ToString();
-                                elemento.tipo = TipoDato.variable;
+                                Elemento elemento = new Elemento(caracter.ToString(), TipoDato.variable);
                                 elementos.Add(elemento);
                             }
                         }
@@ -140,14 +140,12 @@ namespace ProyectoCompiladores
                                 i++;
                                 caracter = contenidoProduccion[i];
                             }while(caracter != '\'');
-                            Elemento elemento = new Elemento();
-                            elemento.valor = valor;
-                            elemento.tipo = TipoDato.terminal;
+                            Elemento elemento = new Elemento(valor, TipoDato.terminal);
                             elementos.Add(elemento);
                         }
                     }
                     Produccion produccionFinal = new Produccion();
-                    produccionFinal.elementos = elementos;
+                    produccionFinal.Elementos = elementos;
                     produccionAux.producciones.Add(produccionFinal);
                 }
             }

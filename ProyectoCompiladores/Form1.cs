@@ -20,16 +20,10 @@ namespace ProyectoCompiladores
         }
 
         /// <summary>
-        /// Elimina las comas que se obtienen al concatenar varias cadenas separadas por coma
+        /// Evento Click del boton para solicitar la busqueda del archivo .txt
         /// </summary>
-        /// <param name="cadena">Cadena a modificar</param>
-        /// <returns>La misma cadena sin la coma de más al final</returns>
-        private String eliminarComa(String cadena)
-        {
-            cadena = cadena.Remove(cadena.Length - 2, 2);
-            return cadena;
-        }
-
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             OpenFileDialog archivo = new OpenFileDialog();
@@ -41,26 +35,42 @@ namespace ProyectoCompiladores
             }
         }
 
+        /// <summary>
+        /// Evento Click para el botón que ejecuta todo el proceso del compilador
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEjecutar_Click(object sender, EventArgs e)
         {
             this.organizarInformacionGramatica(filePath);
         }
 
+        /// <summary>
+        /// Método que llama a los métodos respectivos para el procesamiento del compilador.
+        /// </summary>
+        /// <param name="filePath">Ruta completa de la ubicación del archivo .txt</param>
         private void organizarInformacionGramatica(String filePath)
         {
+            // Instancia de la clase Helper
+            Helper helper = new Helper();
+
             // Instancia a la clase Gramatica
             Gramatica gramatica = new Gramatica();
 
             // Se llama al método encargado de obtener cada linea del .txt
-            List<String> lineas = gramatica.organizaArchivo(filePath);
+            List<String> lineas = gramatica.OrganizaArchivo(filePath);
+
             // Se llama al método para obtener cada variable de la gramática
-            List<String> variables = gramatica.obtenerVariables(lineas);
+            IList<Elemento> variables = gramatica.ObtenerVariables(lineas);
 
             // Se llama al método para obtener las terminales de la gramática
-            List<String> terminales = gramatica.obtenerTerminales(lineas);
+            IList<Elemento> terminales = gramatica.ObtenerTerminales(lineas);
 
             // Se llama al método para obtener las producciones por variable de la gramatica
-            List<ProduccionList> producciones = gramatica.obtenerProducciones(lineas);
+            IList<ProduccionList> producciones = gramatica.ObtenerProducciones(lineas);
+
+            // Se llama al método para quitar la recursividad
+            //IList<ProduccionList> produccionesSinRecursividad = gramatica.QuitarRecursividad
 
 
 
@@ -81,31 +91,36 @@ namespace ProyectoCompiladores
             // String para imprimir las variables de la gramatica
             String lineaVariables = "Variables: ";
             // Se recorren todas las variables obtenidas y se concatenan al String
-            foreach (String v in variables)
+            foreach (Elemento variable in variables)
             {
-                lineaVariables += v + ", ";
+                lineaVariables += variable.Valor + ", ";
             }
             // Se remueve la coma del final
-            lineaVariables = this.eliminarComa(lineaVariables);
+            lineaVariables = helper.eliminarComa(lineaVariables);
 
 
 
             // String para imprimir las terminales de la gramatica
             String lineaTerminales = "Terminales: ";
             // Se recorren todas las terminales obtenidas y se concatenan al String
-            foreach (String t in terminales)
+            foreach (Elemento terminal in terminales)
             {
-                lineaTerminales += t + ", ";
+                lineaTerminales += terminal.Valor + ", ";
             }
             // Se remueve la coma del final
-            lineaTerminales = this.eliminarComa(lineaTerminales);
+            lineaTerminales = helper.eliminarComa(lineaTerminales);
 
 
 
             // String para imprimir las producciones de la gramatica
             String lineaProducciones = String.Format("Producciones: {0}", Environment.NewLine);
             foreach (ProduccionList p in producciones){
-                lineaProducciones += String.Format("{0} -> {1}{2}", p.variable.valor, String.Join(", ", p.producciones), Environment.NewLine);
+                IList<String> produccion = new List<String>();
+                foreach (Produccion prod in p.producciones)
+                {
+                    produccion.Add(String.Join("", prod.Elementos.Select(e => e.Valor).ToList()));
+                }
+                lineaProducciones += String.Format("{0} -> {1}{2}", p.variable.Valor, String.Join(", ", produccion), Environment.NewLine);
             }
 
             // Se añade toda la información obtenida al StringBuilder Principal

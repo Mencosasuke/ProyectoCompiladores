@@ -9,9 +9,9 @@ namespace ProyectoCompiladores
     {
         public Produccion()
         {
-            this.elementos = new List<Elemento>();
+            this.Elementos = new List<Elemento>();
         }
-        // Lista de elementos que componen la producción
-        public IList<Elemento> elementos { get; set; }
+        // Lista de Elementos que componen la producción
+        public IList<Elemento> Elementos { get; set; }
     }
 }
