@@ -19,7 +19,7 @@ namespace ProyectoCompiladores
         }
         public Elemento() { }
 
-        // Tipo de dato del elemento { variable, terminal }
+        // Tipo de dato del elemento { Variable, terminal }
         public TipoDato Tipo { get; set; }
 
         // Valor del elemento
