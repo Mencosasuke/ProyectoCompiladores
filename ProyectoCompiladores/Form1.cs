@@ -60,79 +60,49 @@ namespace ProyectoCompiladores
             // Se llama al método encargado de obtener cada linea del .txt
             List<String> lineas = gramatica.OrganizaArchivo(filePath);
 
-            // Se llama al método para obtener cada Variable de la gramática
-            IList<Elemento> variablesOriginales = gramatica.ObtenerVariables(lineas);
+            // Se llama al método para obtener cada Variable de la gramática original
+            IList<Elemento> variablesOriginales = gramatica.ObtenerVariablesOriginales(lineas);
 
-            // Se llama al método para obtener las terminales de la gramática
-            IList<Elemento> terminalesOriginales = gramatica.ObtenerTerminales(lineas);
+            // Se llama al método para obtener las terminales originales de la gramática
+            IList<Elemento> terminalesOriginales = gramatica.ObtenerTerminalesOriginales(lineas);
 
             // Se llama al método para obtener las Producciones por Variable de la gramatica
-            IList<ProduccionList> producciones = gramatica.ObtenerProducciones(lineas);
+            IList<ProduccionList> produccionesOriginales = gramatica.ObtenerProduccionesOriginales(lineas);
 
             // Se llama al método para quitar la recursividad
-            IList<ProduccionList> produccionesSinRecursividad = gramatica.QuitarRecursividad(producciones);
+            IList<ProduccionList> produccionesSinRecursividad = gramatica.QuitarRecursividad(produccionesOriginales);
 
+            // Se llama al método para obtener las variables de la gramatica sin recursividad
+            IList<Elemento> variablesSinRecursividad = gramatica.ObtenerVariablesSinRecursividad(produccionesSinRecursividad);
 
+            // Se llama al método para obtener las terminales de la gramatica sin recursividad
+            IList<Elemento> terminalesSinRecursividad = gramatica.ObtenerTerminalesSinRecursividad(produccionesSinRecursividad);
 
-
-
-
-
+            
             // Se imprime la gramatica recursiva en el textbox designado
             this.txtGramaticaRecursiva.Text = String.Join(Environment.NewLine, lineas).Trim();
 
 
 
-
-
-
-            // Se arman las cadenas de salida con la información de la gramática organizada
+            // Se arman las cadenas de salida con la información de la gramática original
 
             // String para imprimir las variables de la gramatica
             String lineaVariables = "Variables: ";
-            // Se recorren todas las variables obtenidas y se concatenan al String
-            foreach (Elemento variable in variablesOriginales)
-            {
-                lineaVariables += variable.Valor + ", ";
-            }
-            // Se remueve la coma del final
-            lineaVariables = helper.eliminarComa(lineaVariables);
-
-
+            lineaVariables += String.Join(", ", variablesOriginales.Select(v => v.Valor));
 
             // String para imprimir las terminales de la gramatica
             String lineaTerminales = "Terminales: ";
-            // Se recorren todas las terminales obtenidas y se concatenan al String
-            foreach (Elemento terminal in terminalesOriginales)
-            {
-                lineaTerminales += terminal.Valor + ", ";
-            }
-            // Se remueve la coma del final
-            lineaTerminales = helper.eliminarComa(lineaTerminales);
-
-
+            lineaTerminales += String.Join(", ", terminalesOriginales.Select(t => t.Valor));
 
             // String para imprimir las Producciones de la gramatica
             String lineaProducciones = String.Format("Producciones: {0}", Environment.NewLine);
-            foreach (ProduccionList p in producciones){
+            foreach (ProduccionList p in produccionesOriginales){
                 IList<String> produccion = new List<String>();
                 foreach (Produccion prod in p.Producciones)
                 {
                     produccion.Add(String.Join("", prod.Elementos.Select(e => e.Valor).ToList()));
                 }
                 lineaProducciones += String.Format("{0} : {1}{2}", p.Variable.Valor, String.Join(" | ", produccion), Environment.NewLine);
-            }
-
-            // String para imprimir las Producciones de la gramatica sin recursividad
-            String lineaProduccionesNoRecursivas = String.Format("Producciones: {0}", Environment.NewLine);
-            foreach (ProduccionList p in produccionesSinRecursividad)
-            {
-                IList<String> produccion = new List<String>();
-                foreach (Produccion prod in p.Producciones)
-                {
-                    produccion.Add(String.Join("", prod.Elementos.Select(e => e.Valor).ToList()));
-                }
-                lineaProduccionesNoRecursivas += String.Format("{0} : {1}{2}", p.Variable.Valor, String.Join(" | ", produccion), Environment.NewLine);
             }
 
             // Se añade toda la información obtenida al StringBuilder Principal
@@ -149,7 +119,43 @@ namespace ProyectoCompiladores
 
             this.txtGramaticaInformacion.Text = sbDatosGramatica.ToString().Trim();
 
-            this.txtGramaticaSinRecursividad.Text = lineaProduccionesNoRecursivas.Trim();
+
+
+            // Se arman las cadenas de salida con la información de la gramática sin recursividad
+
+            // String para imprimir las variables de la gramatica sin recursividad
+            String lineaVariablesSinRecursividad = "Variables: ";
+            lineaVariablesSinRecursividad += String.Join(", ", variablesSinRecursividad.Select(v => v.Valor));
+
+            // String para imprimir las terminales de la gramatica sin recursividad
+            String lineaTerminalesSinRecursividad = "Terminales: ";
+            lineaTerminalesSinRecursividad += String.Join(", ", terminalesSinRecursividad.Select(t => t.Valor));
+
+            // String para imprimir las Producciones de la gramatica sin recursividad
+            String lineaProduccionesSinRecursividad = String.Format("Producciones: {0}", Environment.NewLine);
+            foreach (ProduccionList p in produccionesSinRecursividad)
+            {
+                IList<String> produccion = new List<String>();
+                foreach (Produccion prod in p.Producciones)
+                {
+                    produccion.Add(String.Join("", prod.Elementos.Select(e => e.Valor).ToList()));
+                }
+                lineaProduccionesSinRecursividad += String.Format("{0} : {1}{2}", p.Variable.Valor, String.Join(" | ", produccion), Environment.NewLine);
+            }
+
+            // Se añade toda la información obtenida al StringBuilder Principal
+            // Definición del StringBuilder principal
+            StringBuilder sbDatosGramaticaSinRecursividad = new StringBuilder();
+            // Se añade linea de variables
+            sbDatosGramaticaSinRecursividad.AppendLine(lineaVariablesSinRecursividad);
+            sbDatosGramaticaSinRecursividad.AppendLine();
+            // Se añade linea de terminales
+            sbDatosGramaticaSinRecursividad.AppendLine(lineaTerminalesSinRecursividad);
+            sbDatosGramaticaSinRecursividad.AppendLine();
+            // Se añade linea de Producciones
+            sbDatosGramaticaSinRecursividad.AppendLine(lineaProduccionesSinRecursividad);
+
+            this.txtGramaticaSinRecursividad.Text = sbDatosGramaticaSinRecursividad.ToString().Trim();
         }
 
         /// <summary>

@@ -37,7 +37,7 @@ namespace ProyectoCompiladores
         /// </summary>
         /// <param name="lineas">Lista de las lineas que contiene el archivo .txt</param>
         /// <returns>Lista de las variables</returns>
-        public IList<Elemento> ObtenerVariables(List<String> lineas){
+        public IList<Elemento> ObtenerVariablesOriginales(List<String> lineas){
             List<Elemento> variables = new List<Elemento>(); // Lista de todas las variables contenidas en el archivo
             foreach (String linea in lineas)
             {
@@ -57,7 +57,7 @@ namespace ProyectoCompiladores
         /// </summary>
         /// <param name="lineas">Lista de las lineas que contiene el archivo .txt</param>
         /// <returns>Lista de las terminales</returns>
-        public IList<Elemento> ObtenerTerminales(List<String> lineas){
+        public IList<Elemento> ObtenerTerminalesOriginales(List<String> lineas){
             IList<Elemento> terminales = new List<Elemento>();
             Regex regex = new Regex(@"\'(?<token>[^\|\']+)\'");
             foreach (String l in lineas){
@@ -78,9 +78,9 @@ namespace ProyectoCompiladores
         /// <summary>
         /// Obtiene las Producciones de cada Variable
         /// </summary>
-        /// <param name="lineas"></param>
-        /// <returns></returns>
-        public IList<ProduccionList> ObtenerProducciones(List<String> lineas){
+        /// <param name="lineas">Lineas del archivo de la gramatica</param>
+        /// <returns>La gramatica ordenada y organizada</returns>
+        public IList<ProduccionList> ObtenerProduccionesOriginales(List<String> lineas){
             // Lista de Producciones
             IList<ProduccionList> producciones = new List<ProduccionList>();
             // Recorre cada linea del txt para obtener las Producciones
@@ -151,6 +151,11 @@ namespace ProyectoCompiladores
             return producciones;
         }
 
+        /// <summary>
+        /// Metodo para quitar la recursividad de la gramatica.
+        /// </summary>
+        /// <param name="listaProducciones">Lista de variable : Produccion(es) de la gramatica</param>
+        /// <returns>La nueva gramatica sin recursividad</returns>
         public IList<ProduccionList> QuitarRecursividad(IList<ProduccionList> listaProducciones)
         {
             // Nueva lista sin recursividad por la izquierda
@@ -229,6 +234,58 @@ namespace ProyectoCompiladores
             }
 
             return gramaticaSinRecursividad;
+        }
+
+        /// <summary>
+        /// Obtiene todas las variables de la nueva gramatica sin recursividad
+        /// </summary>
+        /// <param name="listaProducciones">Gramatica sin recursividad</param>
+        /// <returns>Lista de variables de la gramatica sin recursividad</returns>
+        public IList<Elemento> ObtenerVariablesSinRecursividad(IList<ProduccionList> listaProducciones)
+        {
+            IList<Elemento> listaVariables = new List<Elemento>();
+
+            // Recorre cada linea de variable : produccion(es) para obtener todas las variables
+            foreach (ProduccionList lineaProducciones in listaProducciones)
+            {
+                // Si la variable no existe en la lista, la agrega
+                if (!listaVariables.Contains(lineaProducciones.Variable))
+                {
+                    listaVariables.Add(lineaProducciones.Variable);
+                }
+            }
+
+            return listaVariables;
+        }
+
+        /// <summary>
+        /// Obtiene todas las terminales de la nueva gramatica sin recursividad
+        /// </summary>
+        /// <param name="listaProducciones">Gramatica sin recursividad</param>
+        /// <returns>Lista de terminales de la gramatica sin recursividad</returns>
+        public IList<Elemento> ObtenerTerminalesSinRecursividad(IList<ProduccionList> listaProducciones)
+        {
+            IList<Elemento> listaTerminales = new List<Elemento>();
+
+            // Recorre cada linea de variable : produccion(es) para obtener todas las terminales
+            foreach (ProduccionList lineaProducciones in listaProducciones)
+            {
+                // Recorre cada produccion de dicha linea para obtener las terminales
+                foreach (Produccion produccion in lineaProducciones.Producciones)
+                {
+                    // Recorre cada elemento de la produccion y verifica si es terminal, de ser así, sí y solo sí no
+                    // existe en la lista de terminales, se añade a la lista.
+                    foreach (Elemento elemento in produccion.Elementos)
+                    {
+                        if (elemento.Tipo == TipoDato.terminal && !listaTerminales.Any(l => l.Valor == elemento.Valor))
+                        {
+                            listaTerminales.Add(elemento);
+                        }
+                    }
+                }
+            }
+
+            return listaTerminales;
         }
     }
 }
