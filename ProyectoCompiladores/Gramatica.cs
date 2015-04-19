@@ -287,5 +287,56 @@ namespace ProyectoCompiladores
 
             return listaTerminales;
         }
+
+        /// <summary>
+        /// Devuelve las funciones primero calculadas de cada variable
+        /// </summary>
+        /// <param name="listaProducciones">gramatica sin recursividad</param>
+        /// <returns>Lista de las funciones primero calculadas de cada variable</returns>
+        public IList<Primero> ObtenerFuncionPrimero(IList<ProduccionList> listaProducciones)
+        {
+            IList<Primero> listaFuncionesPrimero = new List<Primero>();
+
+            foreach (ProduccionList lineaProduccion in listaProducciones)
+            {
+                IList<Elemento> elementos = new List<Elemento>();
+                this.CalcularFuncionPrimero(lineaProduccion, listaProducciones, ref elementos);
+                Primero produccionPrimero = new Primero(lineaProduccion.Variable, elementos);
+                listaFuncionesPrimero.Add(produccionPrimero);
+            }
+
+            return listaFuncionesPrimero;
+        }
+
+        /// <summary>
+        /// Calcula la función primero de una variable en específico
+        /// </summary>
+        /// <param name="lineaProduccion">Linea de producciones de la variable que se calcula</param>
+        /// <param name="listaProducciones">Gramatica sin recursividad</param>
+        /// <param name="elementos">Lista de elementos de la funcion primero para dicha variable</param>
+        public void CalcularFuncionPrimero(ProduccionList lineaProduccion, IList<ProduccionList> listaProducciones, ref IList<Elemento> elementos)
+        {
+            // Recorre cada produccion de la linea de producciones de la variable actual
+            foreach (Produccion produccion in lineaProduccion.Producciones)
+            {
+                Elemento primerElemento = produccion.Elementos[0];
+
+                // Si el primer elemento de la produccion es un terminal, lo añade a la lista de elementos de la función primero,
+                // sí y solo sí, este elemento no existe en la lista. De lo contrario, el elemento es una variable y al ser así,
+                // se llama a este mismo método para calcular la función primero de esa variable
+                if (primerElemento.Tipo == TipoDato.terminal)
+                {
+                    if (!elementos.Any(e => e.Valor.Equals(primerElemento.Valor)))
+                    {
+                        elementos.Add(primerElemento);
+                    }
+                }
+                else
+                {
+                    lineaProduccion = listaProducciones.Where(lp => lp.Variable.Valor.Equals(primerElemento.Valor)).FirstOrDefault();
+                    this.CalcularFuncionPrimero(lineaProduccion, listaProducciones, ref elementos);
+                }
+            }
+        }
     }
 }

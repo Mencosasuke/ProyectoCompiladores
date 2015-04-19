@@ -70,15 +70,19 @@ namespace ProyectoCompiladores
             IList<ProduccionList> produccionesOriginales = gramatica.ObtenerProduccionesOriginales(lineas);
 
             // Se llama al método para quitar la recursividad
-            IList<ProduccionList> produccionesSinRecursividad = gramatica.QuitarRecursividad(produccionesOriginales);
+            IList<ProduccionList> gramaticaSinRecursividad = gramatica.QuitarRecursividad(produccionesOriginales);
 
             // Se llama al método para obtener las variables de la gramatica sin recursividad
-            IList<Elemento> variablesSinRecursividad = gramatica.ObtenerVariablesSinRecursividad(produccionesSinRecursividad);
+            IList<Elemento> variablesSinRecursividad = gramatica.ObtenerVariablesSinRecursividad(gramaticaSinRecursividad);
 
             // Se llama al método para obtener las terminales de la gramatica sin recursividad
-            IList<Elemento> terminalesSinRecursividad = gramatica.ObtenerTerminalesSinRecursividad(produccionesSinRecursividad);
+            IList<Elemento> terminalesSinRecursividad = gramatica.ObtenerTerminalesSinRecursividad(gramaticaSinRecursividad);
+
+            // Se llama al método para obtener la función primero de la gramatica sin recursividad
+            IList<Primero> listaFuncionesPrimero = gramatica.ObtenerFuncionPrimero(gramaticaSinRecursividad);
 
             
+
             // Se imprime la gramatica recursiva en el textbox designado
             this.txtGramaticaRecursiva.Text = String.Join(Environment.NewLine, lineas).Trim();
 
@@ -133,7 +137,7 @@ namespace ProyectoCompiladores
 
             // String para imprimir las Producciones de la gramatica sin recursividad
             String lineaProduccionesSinRecursividad = String.Format("Producciones: {0}", Environment.NewLine);
-            foreach (ProduccionList p in produccionesSinRecursividad)
+            foreach (ProduccionList p in gramaticaSinRecursividad)
             {
                 IList<String> produccion = new List<String>();
                 foreach (Produccion prod in p.Producciones)
@@ -156,6 +160,19 @@ namespace ProyectoCompiladores
             sbDatosGramaticaSinRecursividad.AppendLine(lineaProduccionesSinRecursividad);
 
             this.txtGramaticaSinRecursividad.Text = sbDatosGramaticaSinRecursividad.ToString().Trim();
+
+
+            // Se arma la cadena String para imprimir las funciones primero calculadas
+
+            //String para imprimir las funciones primero
+            String lineaFuncionesPrimero = String.Empty;
+            foreach (Primero funcionPrimero in listaFuncionesPrimero)
+            {
+                lineaFuncionesPrimero += String.Format("Primero( {0} ) : {{ {1} }}{2}", funcionPrimero.Variable.Valor, String.Join(" , ", funcionPrimero.Terminales.Select(t => t.Valor).ToList()), Environment.NewLine);
+            }
+
+            // Se imprime la lista de funciones primero en el txtBox correspondiente
+            this.txtFuncionesPrimero.Text = lineaFuncionesPrimero;
         }
 
         /// <summary>

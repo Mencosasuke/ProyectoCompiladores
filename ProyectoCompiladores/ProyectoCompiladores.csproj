@@ -55,6 +55,7 @@
     </Compile>
     <Compile Include="Gramatica.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Primero.cs" />
     <Compile Include="Produccion.cs" />
     <Compile Include="ProduccionList.cs" />
     <Compile Include="Program.cs" />

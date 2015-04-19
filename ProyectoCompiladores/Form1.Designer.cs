@@ -38,6 +38,8 @@
             this.btnInfo = new System.Windows.Forms.Button();
             this.txtGramaticaSinRecursividad = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtFuncionesPrimero = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnBuscar
@@ -144,12 +146,34 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "GRAMATICA SIN RECURSIVIDAD";
             // 
+            // txtFuncionesPrimero
+            // 
+            this.txtFuncionesPrimero.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtFuncionesPrimero.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFuncionesPrimero.Location = new System.Drawing.Point(12, 382);
+            this.txtFuncionesPrimero.Multiline = true;
+            this.txtFuncionesPrimero.Name = "txtFuncionesPrimero";
+            this.txtFuncionesPrimero.ReadOnly = true;
+            this.txtFuncionesPrimero.Size = new System.Drawing.Size(270, 276);
+            this.txtFuncionesPrimero.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(93, 366);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(108, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "FUNCION PRIMERO";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(875, 362);
+            this.ClientSize = new System.Drawing.Size(875, 670);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.txtFuncionesPrimero);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtGramaticaSinRecursividad);
             this.Controls.Add(this.btnInfo);
@@ -181,6 +205,8 @@
         private System.Windows.Forms.Button btnInfo;
         private System.Windows.Forms.TextBox txtGramaticaSinRecursividad;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtFuncionesPrimero;
+        private System.Windows.Forms.Label label4;
     }
 }
 

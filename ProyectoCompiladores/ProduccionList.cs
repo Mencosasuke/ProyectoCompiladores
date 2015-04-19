@@ -15,12 +15,12 @@ namespace ProyectoCompiladores
             Producciones = new List<Produccion>();
         }
         /// <summary>
-        /// Variable que produce n lineaProducciones.
+        /// Variable que produce n producciones.
         /// </summary>
         public Elemento Variable { get; set; }
 
         /// <summary>
-        /// Lista de lineaProducciones que se producen por la variable
+        /// Lista de producciones que se producen por la variable
         /// </summary>
         public IList<Produccion> Producciones { get; set; }
     }
