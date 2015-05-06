@@ -40,6 +40,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtFuncionesPrimero = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtFuncionSiguiente = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnBuscar
@@ -166,12 +168,34 @@
             this.label4.TabIndex = 12;
             this.label4.Text = "FUNCION PRIMERO";
             // 
+            // txtFuncionSiguiente
+            // 
+            this.txtFuncionSiguiente.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.txtFuncionSiguiente.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFuncionSiguiente.Location = new System.Drawing.Point(302, 382);
+            this.txtFuncionSiguiente.Multiline = true;
+            this.txtFuncionSiguiente.Name = "txtFuncionSiguiente";
+            this.txtFuncionSiguiente.ReadOnly = true;
+            this.txtFuncionSiguiente.Size = new System.Drawing.Size(270, 276);
+            this.txtFuncionSiguiente.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(384, 366);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(116, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "FUNCION SIGUIENTE";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(875, 670);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtFuncionSiguiente);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtFuncionesPrimero);
             this.Controls.Add(this.label3);
@@ -207,6 +231,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtFuncionesPrimero;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtFuncionSiguiente;
+        private System.Windows.Forms.Label label5;
     }
 }
 

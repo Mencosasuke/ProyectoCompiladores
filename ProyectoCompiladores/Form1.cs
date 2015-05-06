@@ -81,6 +81,9 @@ namespace ProyectoCompiladores
             // Se llama al método para obtener la función primero de la gramatica sin recursividad
             IList<Primero> listaFuncionesPrimero = gramatica.ObtenerFuncionPrimero(gramaticaSinRecursividad);
 
+            // Se llama al método para obtener la función siguiente de la gramatica sin recursividad
+            IList<Siguiente> listaFuncionesSiguiente = gramatica.ObtenerFuncionSiguiente(gramaticaSinRecursividad, listaFuncionesPrimero);
+
             
 
             // Se imprime la gramatica recursiva en el textbox designado
@@ -173,6 +176,19 @@ namespace ProyectoCompiladores
 
             // Se imprime la lista de funciones primero en el txtBox correspondiente
             this.txtFuncionesPrimero.Text = lineaFuncionesPrimero;
+
+
+            // Se arma la cadena String para imprimir las funciones siguiente calculadas
+
+            //String para imprimir las funciones siguiente
+            String lineaFuncionesSiguiente = String.Empty;
+            foreach (Siguiente funcionSiguiente in listaFuncionesSiguiente)
+            {
+                lineaFuncionesSiguiente += String.Format("Siguiente( {0} ) : {{ {1} }}{2}", funcionSiguiente.Variable.Valor, String.Join(" , ", funcionSiguiente.Terminales.Select(t => t.Valor).ToList()), Environment.NewLine);
+            }
+
+            // Se imprime la lista de funciones siguiente en el txtBox correspondiente
+            this.txtFuncionSiguiente.Text = lineaFuncionesSiguiente;
         }
 
         /// <summary>

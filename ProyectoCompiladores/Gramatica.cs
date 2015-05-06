@@ -338,5 +338,79 @@ namespace ProyectoCompiladores
                 }
             }
         }
+
+        public IList<Siguiente> ObtenerFuncionSiguiente(IList<ProduccionList> listaProducciones, IList<Primero> listaFuncionesPrimero)
+        {
+            IList<Siguiente> listaFuncionesSiguiente = new List<Siguiente>();
+
+            foreach (Elemento variable in listaProducciones.Select(lp => lp.Variable).ToList())
+            {
+                Siguiente siguiente = new Siguiente();
+                List<Elemento> elementos = new List<Elemento>();
+                siguiente.Variable = variable;
+                this.CalcularFuncionSiguiente(variable, listaProducciones, listaFuncionesPrimero, ref elementos);
+                elementos.Add(new Elemento("$", TipoDato.terminal));
+                siguiente.Terminales = elementos;
+                listaFuncionesSiguiente.Add(siguiente);
+            }
+
+            return listaFuncionesSiguiente;
+        }
+
+        public void CalcularFuncionSiguiente(Elemento variable, IList<ProduccionList> listaProducciones, IList<Primero> listaFuncionesPrimero, ref List<Elemento> elementos)
+        {
+            foreach (ProduccionList lineaProduccion in listaProducciones)
+            {
+                foreach (Produccion produccion in lineaProduccion.Producciones)
+                {
+                    if (produccion.Elementos.Any(e => e.Valor == variable.Valor))
+                    {
+                        int longitud = produccion.Elementos.Count;
+                        for (int i = 0; i < longitud; i++)
+                        {
+                            if (produccion.Elementos[i].Valor == variable.Valor)
+                            {
+                                // Si siguiente es Epsilon, llama a función siguiente de la variable actual
+                                if (i + 1 > longitud - 1)
+                                {
+                                    // Si la variable que se esta calculando es igual a la variable actual, no hace nada,
+                                    // de lo contrario, calcula siguiente de esa variable y añade a lista de elementos.
+                                    if (variable.Valor != lineaProduccion.Variable.Valor)
+                                    {
+                                        this.CalcularFuncionSiguiente(lineaProduccion.Variable, listaProducciones, listaFuncionesPrimero, ref elementos);
+                                    }
+                                }
+                                // Si siguiente es terminal, la añade a la lista de elementos, si no existe.
+                                else if(produccion.Elementos[i + 1].Tipo == TipoDato.terminal)
+                                {
+                                    if (!elementos.Any(e => e.Valor == produccion.Elementos[i + 1].Valor))
+                                    {
+                                        elementos.Add(produccion.Elementos[i + 1]);
+                                    }
+                                }
+                                // Si siguiente es variable, llama a función primero de esa variable
+                                else if (produccion.Elementos[i + 1].Tipo == TipoDato.variable)
+                                {
+                                    Primero primero = new Primero();
+                                    primero = listaFuncionesPrimero.Where(fp => fp.Variable.Valor == produccion.Elementos[i + 1].Valor).FirstOrDefault();
+                                    foreach (Elemento elemento in primero.Terminales)
+                                    {
+                                        if (!elementos.Any(e => e.Valor == elemento.Valor) && elemento.Valor != "Ep")
+                                        {
+                                            elementos.Add(elemento);
+                                        }
+                                        else if (elemento.Valor == "Ep")
+                                        {
+                                            this.CalcularFuncionSiguiente(primero.Variable, listaProducciones, listaFuncionesPrimero, ref elementos);
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
