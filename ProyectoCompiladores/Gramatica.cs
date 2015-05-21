@@ -222,7 +222,7 @@ namespace ProyectoCompiladores
                 {
                     // Añade Epsilon a la lista de Alfas si la variable es recursiva
                     IList<Elemento> elementoEpsilon = new List<Elemento>();
-                    elementoEpsilon.Add(new Elemento("Ep", TipoDato.terminal));
+                    elementoEpsilon.Add(new Elemento("e", TipoDato.terminal));
                     alfas.Add(new Produccion(elementoEpsilon));
 
                     // Añade las producciones alfa a la nueva linea de producciones alfa de la variable prima
@@ -395,11 +395,11 @@ namespace ProyectoCompiladores
                                     primero = listaFuncionesPrimero.Where(fp => fp.Variable.Valor == produccion.Elementos[i + 1].Valor).FirstOrDefault();
                                     foreach (Elemento elemento in primero.Terminales)
                                     {
-                                        if (!elementos.Any(e => e.Valor == elemento.Valor) && elemento.Valor != "Ep")
+                                        if (!elementos.Any(e => e.Valor == elemento.Valor) && elemento.Valor != "e")
                                         {
                                             elementos.Add(elemento);
                                         }
-                                        else if (elemento.Valor == "Ep")
+                                        else if (elemento.Valor == "e")
                                         {
                                             this.CalcularFuncionSiguiente(primero.Variable, listaProducciones, listaFuncionesPrimero, ref elementos);
                                         }
