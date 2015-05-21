@@ -102,7 +102,7 @@ namespace ProyectoCompiladores
             lineaTerminales += String.Join(", ", terminalesOriginales.Select(t => t.Valor));
 
             // String para imprimir las Producciones de la gramatica
-            String lineaProducciones = String.Format("Producciones: {0}", Environment.NewLine);
+            String lineaProducciones = String.Format("Gramatica: {0}", Environment.NewLine);
             foreach (ProduccionList p in produccionesOriginales){
                 IList<String> produccion = new List<String>();
                 foreach (Produccion prod in p.Producciones)
@@ -129,17 +129,30 @@ namespace ProyectoCompiladores
 
 
             // Se arman las cadenas de salida con la información de la gramática sin recursividad
+            
+            // Proceso para imprimir las variables de la gramatica sin recursividad
+            this.txtGramaticaSinRecursividad.Text += "Variables: ";
 
-            // String para imprimir las variables de la gramatica sin recursividad
-            String lineaVariablesSinRecursividad = "Variables: ";
-            lineaVariablesSinRecursividad += String.Join(", ", variablesSinRecursividad.Select(v => v.Valor));
+            foreach(Elemento variable in variablesSinRecursividad)
+            {
+                this.txtGramaticaSinRecursividad.Text += variable.Valor + " , ";
+                //MessageBox.Show("Variable: " + variable.Valor);
+            }
 
-            // String para imprimir las terminales de la gramatica sin recursividad
-            String lineaTerminalesSinRecursividad = "Terminales: ";
-            lineaTerminalesSinRecursividad += String.Join(", ", terminalesSinRecursividad.Select(t => t.Valor));
+            this.txtGramaticaSinRecursividad.Text = this.txtGramaticaSinRecursividad.Text.Substring(0, this.txtGramaticaSinRecursividad.Text.Length - 3) + Environment.NewLine + Environment.NewLine + "Terminales: ";
+            //MessageBox.Show("");
 
-            // String para imprimir las Producciones de la gramatica sin recursividad
-            String lineaProduccionesSinRecursividad = String.Format("Producciones: {0}", Environment.NewLine);
+            // Proceso para imprimir las terminales de la gramatica sin recursividad            
+            foreach (Elemento terminal in terminalesSinRecursividad)
+            {
+                this.txtGramaticaSinRecursividad.Text += terminal.Valor + " , ";
+                //MessageBox.Show(String.Format("Terminal: ' {0} '", terminal.Valor));
+            }
+
+            this.txtGramaticaSinRecursividad.Text = this.txtGramaticaSinRecursividad.Text.Substring(0, this.txtGramaticaSinRecursividad.Text.Length - 3) + Environment.NewLine + Environment.NewLine + "Gramatica: " + Environment.NewLine;
+            //MessageBox.Show("");
+
+            // Proceso para imprimir las Producciones de la gramatica sin recursividad
             foreach (ProduccionList p in gramaticaSinRecursividad)
             {
                 IList<String> produccion = new List<String>();
@@ -147,48 +160,52 @@ namespace ProyectoCompiladores
                 {
                     produccion.Add(String.Join("", prod.Elementos.Select(e => e.Valor).ToList()));
                 }
-                lineaProduccionesSinRecursividad += String.Format("{0} : {1}{2}", p.Variable.Valor, String.Join(" | ", produccion), Environment.NewLine);
+                this.txtGramaticaSinRecursividad.Text += p.Variable.Valor + " : ";
+                foreach (String prod in produccion)
+                {
+                    this.txtGramaticaSinRecursividad.Text += prod + " | ";
+                    //MessageBox.Show("");
+                }
+                this.txtGramaticaSinRecursividad.Text = this.txtGramaticaSinRecursividad.Text.Substring(0, this.txtGramaticaSinRecursividad.Text.Length - 3) + Environment.NewLine;
             }
 
-            // Se añade toda la información obtenida al StringBuilder Principal
-            // Definición del StringBuilder principal
-            StringBuilder sbDatosGramaticaSinRecursividad = new StringBuilder();
-            // Se añade linea de variables
-            sbDatosGramaticaSinRecursividad.AppendLine(lineaVariablesSinRecursividad);
-            sbDatosGramaticaSinRecursividad.AppendLine();
-            // Se añade linea de terminales
-            sbDatosGramaticaSinRecursividad.AppendLine(lineaTerminalesSinRecursividad);
-            sbDatosGramaticaSinRecursividad.AppendLine();
-            // Se añade linea de Producciones
-            sbDatosGramaticaSinRecursividad.AppendLine(lineaProduccionesSinRecursividad);
-
-            this.txtGramaticaSinRecursividad.Text = sbDatosGramaticaSinRecursividad.ToString().Trim();
 
 
             // Se arma la cadena String para imprimir las funciones primero calculadas
 
-            //String para imprimir las funciones primero
-            String lineaFuncionesPrimero = String.Empty;
+            //Proceso para imprimir las funciones primero
             foreach (Primero funcionPrimero in listaFuncionesPrimero)
             {
-                lineaFuncionesPrimero += String.Format("Primero( {0} ) : {{ {1} }}{2}", funcionPrimero.Variable.Valor, String.Join(" , ", funcionPrimero.Terminales.Select(t => t.Valor).ToList()), Environment.NewLine);
+                //MessageBox.Show("Funcion primero de : " + this.txtFuncionesPrimero.Text);
+                this.txtFuncionesPrimero.Text += "Primero (" + funcionPrimero.Variable.Valor + ")  :  ";
+                foreach (Elemento terminal in funcionPrimero.Terminales)
+                {
+                    this.txtFuncionesPrimero.Text += terminal.Valor + " , ";
+                    //MessageBox.Show("Terminal : " + terminal.Valor);
+                }
+                this.txtFuncionesPrimero.Text = this.txtFuncionesPrimero.Text.Substring(0, this.txtFuncionesPrimero.Text.Length - 3) + Environment.NewLine;
+                //MessageBox.Show("");
             }
 
-            // Se imprime la lista de funciones primero en el txtBox correspondiente
-            this.txtFuncionesPrimero.Text = lineaFuncionesPrimero;
 
 
             // Se arma la cadena String para imprimir las funciones siguiente calculadas
 
-            //String para imprimir las funciones siguiente
-            String lineaFuncionesSiguiente = String.Empty;
+            //Proceso para imprimir las funciones siguiente
             foreach (Siguiente funcionSiguiente in listaFuncionesSiguiente)
             {
-                lineaFuncionesSiguiente += String.Format("Siguiente( {0} ) : {{ {1} }}{2}", funcionSiguiente.Variable.Valor, String.Join(" , ", funcionSiguiente.Terminales.Select(t => t.Valor).ToList()), Environment.NewLine);
+                //MessageBox.Show("Funcion siguiente de : " + funcionSiguiente.Variable.Valor);
+                this.txtFuncionSiguiente.Text += "Siguiente (" + funcionSiguiente.Variable.Valor + ")  :  ";
+                foreach (Elemento terminal in funcionSiguiente.Terminales)
+                {
+                    this.txtFuncionSiguiente.Text += terminal.Valor + "  ,  ";
+                    //MessageBox.Show("Terminal : " + terminal.Valor);
+                }
+                this.txtFuncionSiguiente.Text = this.txtFuncionSiguiente.Text.Substring(0, this.txtFuncionSiguiente.Text.Length - 3) + Environment.NewLine;
+                //MessageBox.Show("");
             }
 
-            // Se imprime la lista de funciones siguiente en el txtBox correspondiente
-            this.txtFuncionSiguiente.Text = lineaFuncionesSiguiente;
+
         }
 
         /// <summary>
