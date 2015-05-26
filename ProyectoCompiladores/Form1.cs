@@ -84,6 +84,10 @@ namespace ProyectoCompiladores
             // Se llama al método para obtener la función siguiente de la gramatica sin recursividad
             IList<Siguiente> listaFuncionesSiguiente = gramatica.ObtenerFuncionSiguiente(gramaticaSinRecursividad, listaFuncionesPrimero);
 
+            // Se llama al método para generar la tabla de símbolos
+            List<TablaSimbolo> tablaSibolos = new List<TablaSimbolo>();
+            gramatica.ObtenerTablaDeSimbolos(gramaticaSinRecursividad, variablesSinRecursividad, terminalesSinRecursividad, listaFuncionesPrimero, listaFuncionesSiguiente, ref tablaSibolos);
+
             
 
             // Se imprime la gramatica recursiva en el textbox designado

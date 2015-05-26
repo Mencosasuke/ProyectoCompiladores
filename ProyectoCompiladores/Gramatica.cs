@@ -10,6 +10,9 @@ namespace ProyectoCompiladores
 {
     class Gramatica
     {
+
+        private const String IDENTIFICADOR_EPSILON = "e";
+
         /// <summary>
         /// Lee el archivo y guarda cada linea del mismo en una lista de strings.
         /// </summary>
@@ -222,7 +225,7 @@ namespace ProyectoCompiladores
                 {
                     // Añade Epsilon a la lista de Alfas si la variable es recursiva
                     IList<Elemento> elementoEpsilon = new List<Elemento>();
-                    elementoEpsilon.Add(new Elemento("e", TipoDato.terminal));
+                    elementoEpsilon.Add(new Elemento(IDENTIFICADOR_EPSILON, TipoDato.terminal));
                     alfas.Add(new Produccion(elementoEpsilon));
 
                     // Añade las producciones alfa a la nueva linea de producciones alfa de la variable prima
@@ -295,11 +298,11 @@ namespace ProyectoCompiladores
         /// <returns>Lista de las funciones primero calculadas de cada variable</returns>
         public IList<Primero> ObtenerFuncionPrimero(IList<ProduccionList> listaProducciones)
         {
-            IList<Primero> listaFuncionesPrimero = new List<Primero>();
+            List<Primero> listaFuncionesPrimero = new List<Primero>();
 
             foreach (ProduccionList lineaProduccion in listaProducciones)
             {
-                IList<Elemento> elementos = new List<Elemento>();
+                List<Elemento> elementos = new List<Elemento>();
                 this.CalcularFuncionPrimero(lineaProduccion, listaProducciones, ref elementos);
                 Primero produccionPrimero = new Primero(lineaProduccion.Variable, elementos);
                 listaFuncionesPrimero.Add(produccionPrimero);
@@ -314,7 +317,7 @@ namespace ProyectoCompiladores
         /// <param name="lineaProduccion">Linea de producciones de la variable que se calcula</param>
         /// <param name="listaProducciones">Gramatica sin recursividad</param>
         /// <param name="elementos">Lista de elementos de la funcion primero para dicha variable</param>
-        public void CalcularFuncionPrimero(ProduccionList lineaProduccion, IList<ProduccionList> listaProducciones, ref IList<Elemento> elementos)
+        public void CalcularFuncionPrimero(ProduccionList lineaProduccion, IList<ProduccionList> listaProducciones, ref List<Elemento> elementos)
         {
             // Recorre cada produccion de la linea de producciones de la variable actual
             foreach (Produccion produccion in lineaProduccion.Producciones)
@@ -339,10 +342,17 @@ namespace ProyectoCompiladores
             }
         }
 
+        /// <summary>
+        /// Obtiene la lista de funciones siguiente para cada variable de la gramatica sin recursividad.
+        /// </summary>
+        /// <param name="listaProducciones">Producciones de la gramatica sin recursividad</param>
+        /// <param name="listaFuncionesPrimero">Lista de las funciones primero</param>
+        /// <returns>Lista de funciones siguiente para la gramatica</returns>
         public IList<Siguiente> ObtenerFuncionSiguiente(IList<ProduccionList> listaProducciones, IList<Primero> listaFuncionesPrimero)
         {
             IList<Siguiente> listaFuncionesSiguiente = new List<Siguiente>();
 
+            // Calcula la función siguiente para cada variable de la gramatica
             foreach (Elemento variable in listaProducciones.Select(lp => lp.Variable).ToList())
             {
                 Siguiente siguiente = new Siguiente();
@@ -357,6 +367,13 @@ namespace ProyectoCompiladores
             return listaFuncionesSiguiente;
         }
 
+        /// <summary>
+        /// Calcula la función siguiente para cada variable de la gramatica sin recursividad.
+        /// </summary>
+        /// <param name="variable">Variable de la que se calcula la función siguiente.</param>
+        /// <param name="listaProducciones">Gramatica sin recursividad</param>
+        /// <param name="listaFuncionesPrimero">Funciones primero de la gramatica</param>
+        /// <param name="elementos">Lista de terminales que componen la función siguiente para la variable que se calcula</param>
         public void CalcularFuncionSiguiente(Elemento variable, IList<ProduccionList> listaProducciones, IList<Primero> listaFuncionesPrimero, ref List<Elemento> elementos)
         {
             foreach (ProduccionList lineaProduccion in listaProducciones)
@@ -395,11 +412,11 @@ namespace ProyectoCompiladores
                                     primero = listaFuncionesPrimero.Where(fp => fp.Variable.Valor == produccion.Elementos[i + 1].Valor).FirstOrDefault();
                                     foreach (Elemento elemento in primero.Terminales)
                                     {
-                                        if (!elementos.Any(e => e.Valor == elemento.Valor) && elemento.Valor != "e")
+                                        if (!elementos.Any(e => e.Valor == elemento.Valor) && elemento.Valor != IDENTIFICADOR_EPSILON)
                                         {
                                             elementos.Add(elemento);
                                         }
-                                        else if (elemento.Valor == "e")
+                                        else if (elemento.Valor == IDENTIFICADOR_EPSILON)
                                         {
                                             this.CalcularFuncionSiguiente(primero.Variable, listaProducciones, listaFuncionesPrimero, ref elementos);
                                         }
@@ -411,6 +428,138 @@ namespace ProyectoCompiladores
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Genera y obtiene la tabla de síbolos de la gramática
+        /// </summary>
+        /// <param name="gramaticaSinRecursividad">Gramatica sin recursividad</param>
+        /// <param name="variablesSinRecursividad">Variables de la gramatica sin recursividad</param>
+        /// <param name="terminalesSinRecursividad">Terminales de la gramatica sin recursividad</param>
+        /// <param name="listaFuncionesPrimero">Listado de funciones primero de la gramatica</param>
+        /// <param name="listaFuncionesSiguiente">Listado de funciones siguiente de la gramatica</param>
+        /// <param name="tablaSimbolos">Tabla de símbolos que se generara al final del método</param>
+        public void ObtenerTablaDeSimbolos(IList<ProduccionList> gramaticaSinRecursividad, IList<Elemento> variablesSinRecursividad, IList<Elemento> terminalesSinRecursividad, IList<Primero> listaFuncionesPrimero, IList<Siguiente> listaFuncionesSiguiente, ref List<TablaSimbolo> tablaSimbolos)
+        {
+            // Itera por cada variable que posea la gramatica sin recursividad.
+            foreach (Elemento variable in variablesSinRecursividad)
+            {
+                TablaSimbolo lineaTablaSimbolo = new TablaSimbolo();
+                lineaTablaSimbolo.Variable = variable;
+
+                // Itera por cada terminal de la funcion primero para esa variable.
+                foreach (Elemento terminal in listaFuncionesPrimero.Where(fp => fp.Variable.Valor == variable.Valor).FirstOrDefault().Terminales)
+                {
+                    Posicion posicion = new Posicion();
+                    List<Produccion> producciones = new List<Produccion>();
+
+                    // Si contiene epsilon, obtiene todas las producciones que producen epsilon y las añade a nuevas posiciones por cada
+                    // terminal que se encuentre en funcion siguiente para la variable actual
+                    if (terminal.Valor == IDENTIFICADOR_EPSILON)
+                    {
+                        // Arma el listado de producciones que contienen epsilon para la variable actual
+                        foreach (Produccion produccionGramatica in gramaticaSinRecursividad.Where(g => g.Variable.Valor == variable.Valor).FirstOrDefault().Producciones)
+                        {
+                            if (produccionGramatica.Elementos.Where(pg => pg.Tipo == TipoDato.terminal).Select(pg => pg.Valor).Contains(IDENTIFICADOR_EPSILON))
+                            {
+                                producciones.Add(produccionGramatica);
+                            }
+                        }
+                        // Añade las posiciones a la tabla de simbolos por cada 
+                        foreach (Elemento elementoFuncionSiguiente in listaFuncionesSiguiente.Where(fs => fs.Variable.Valor == variable.Valor).FirstOrDefault().Terminales)
+                        {
+                            posicion = new Posicion();
+                            posicion.Terminal = elementoFuncionSiguiente;
+                            posicion.Producciones = producciones;
+                            lineaTablaSimbolo.Posiciones.Add(posicion);
+                        }
+                    }
+                    else
+                    {
+                        posicion.Terminal = terminal;
+                        bool flag = true;
+
+                        // Primero se recorren todas las producciones y se añaden las que contengan la terminal
+                        foreach (Produccion produccionGramatica in gramaticaSinRecursividad.Where(g => g.Variable.Valor == variable.Valor).FirstOrDefault().Producciones)
+                        {
+                            if (produccionGramatica.Elementos.Where(pg => pg.Tipo == TipoDato.terminal).Select(pg => pg.Valor).Contains(terminal.Valor))
+                            {
+                                producciones.Add(produccionGramatica);
+                                flag = false;
+                            }
+                        }
+
+                        // Si no se encontró la producción 
+                        if (flag)
+                        {
+                            // Itera cada produccion de la variable que se evalua actualmente.
+                            foreach (Produccion produccionGramatica in gramaticaSinRecursividad.Where(g => g.Variable.Valor == variable.Valor).FirstOrDefault().Producciones)
+                            {
+                                // Se evalua una a una las variables de la produccion para buscar en sus producciones a la terminal evaluada
+
+                                // Lleva control de las variables que se han evaluado para buscar al terminal actual
+                                List<String> variablesEvaluadas = new List<String>();
+
+                                foreach (Elemento var in produccionGramatica.Elementos.Where(pg => pg.Tipo == TipoDato.variable))
+                                {
+                                    // Se añade la variable a la lista de variables evaluadas
+                                    variablesEvaluadas.Add(var.Valor);
+
+                                    // Si la terminal esta contenida en alguna produccion generada por alguna variable de la produccion actual,
+                                    // se añade a la lsita de producciones.
+                                    if (this.ObtenerProduccionesTerminalTablaSimbolos(var, terminal, gramaticaSinRecursividad, variablesEvaluadas))
+                                    {
+                                        producciones.Add(produccionGramatica);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        posicion.Producciones = producciones;
+                        lineaTablaSimbolo.Posiciones.Add(posicion);
+
+                    }
+                }
+                tablaSimbolos.Add(lineaTablaSimbolo);
+            }
+        }
+
+        /// <summary>
+        /// Fúnción recursiva para buscar si la producción evaluada puede llegar a generar a la terminal evaluada, en caso que ninguna
+        /// producción de la variable contenga a la terminal.
+        /// </summary>
+        /// <param name="variable">Variable contenida en la produccion origen que es evaluada</param>
+        /// <param name="terminal">Terminal que se busca en las producciones.</param>
+        /// <param name="gramatica">Gramatica sin recursividad</param>
+        /// <param name="variablesEvaluadas">Listado de variables que ya han sido evaluadas</param>
+        /// <returns></returns>
+        public bool ObtenerProduccionesTerminalTablaSimbolos(Elemento variable, Elemento terminal, IList<ProduccionList> gramatica, List<String> variablesEvaluadas)
+        {
+            // Itera cada producción de la gramatica para la variable enviada de la produccion que la invoca.
+            foreach (Produccion produccionGramatica in gramatica.Where(g => g.Variable.Valor == variable.Valor).FirstOrDefault().Producciones)
+            {
+                // Si se encuentra la terminal buscada, se devuelve un valor ture para añadir la prudcción que originó la producción actual
+                // Si no se encuentra, se evaluan de nuevo una a una las variables de la producción. Si nunca se encuentra, se devuelve false.
+                if (produccionGramatica.Elementos.Where(pg => pg.Tipo == TipoDato.terminal).Select(pg => pg.Valor).Contains(terminal.Valor))
+                {
+                    return true;
+                }
+                else
+                {
+                    foreach (Elemento var in produccionGramatica.Elementos.Where(pg => pg.Tipo == TipoDato.variable))
+                    {
+                        // Se evalua la variable actual si no se encuentra en la lista de evaluadas
+                        if (!variablesEvaluadas.Contains(var.Valor))
+                        {
+                            variablesEvaluadas.Add(var.Valor);
+
+                            return this.ObtenerProduccionesTerminalTablaSimbolos(var, terminal, gramatica, variablesEvaluadas);
+                        }
+                    }
+                }
+            }
+            return false;
         }
     }
 }

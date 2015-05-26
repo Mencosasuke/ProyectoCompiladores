@@ -7,7 +7,7 @@ namespace ProyectoCompiladores
 {
     class Primero
     {
-        public Primero(Elemento variable, IList<Elemento> terminales)
+        public Primero(Elemento variable, List<Elemento> terminales)
         {
             this.Variable = variable;
             this.Terminales = terminales;
@@ -21,6 +21,6 @@ namespace ProyectoCompiladores
         public Elemento Variable { get; set; }
 
         // Lista de terminales que componen la función primero de la variable
-        public IList<Elemento> Terminales { get; set; }
+        public List<Elemento> Terminales { get; set; }
     }
 }
