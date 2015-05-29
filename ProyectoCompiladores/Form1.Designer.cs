@@ -44,6 +44,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dgvTablaSimbolos = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
+            this.btnBitacora = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaSimbolos)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,9 +96,9 @@
             // 
             this.btnEjecutar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEjecutar.Enabled = false;
-            this.btnEjecutar.Location = new System.Drawing.Point(593, 12);
+            this.btnEjecutar.Location = new System.Drawing.Point(411, 7);
             this.btnEjecutar.Name = "btnEjecutar";
-            this.btnEjecutar.Size = new System.Drawing.Size(227, 37);
+            this.btnEjecutar.Size = new System.Drawing.Size(124, 37);
             this.btnEjecutar.TabIndex = 4;
             this.btnEjecutar.Text = "Ejecutar Lectura";
             this.btnEjecutar.UseVisualStyleBackColor = true;
@@ -128,7 +129,7 @@
             this.btnInfo.BackColor = System.Drawing.Color.Transparent;
             this.btnInfo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnInfo.Image = global::ProyectoCompiladores.Properties.Resources.info_icon;
-            this.btnInfo.Location = new System.Drawing.Point(826, 12);
+            this.btnInfo.Location = new System.Drawing.Point(541, 7);
             this.btnInfo.Name = "btnInfo";
             this.btnInfo.Size = new System.Drawing.Size(37, 37);
             this.btnInfo.TabIndex = 8;
@@ -222,12 +223,25 @@
             this.label6.TabIndex = 16;
             this.label6.Text = "Tabla de Símbolos";
             // 
+            // btnBitacora
+            // 
+            this.btnBitacora.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnBitacora.Enabled = false;
+            this.btnBitacora.Location = new System.Drawing.Point(584, 7);
+            this.btnBitacora.Name = "btnBitacora";
+            this.btnBitacora.Size = new System.Drawing.Size(124, 37);
+            this.btnBitacora.TabIndex = 17;
+            this.btnBitacora.Text = "Validar Cadena";
+            this.btnBitacora.UseVisualStyleBackColor = true;
+            this.btnBitacora.Click += new System.EventHandler(this.btnBitacora_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1086, 699);
+            this.Controls.Add(this.btnBitacora);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.dgvTablaSimbolos);
             this.Controls.Add(this.label5);
@@ -272,6 +286,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.DataGridView dgvTablaSimbolos;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnBitacora;
     }
 }
 

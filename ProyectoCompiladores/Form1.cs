@@ -12,6 +12,12 @@ namespace ProyectoCompiladores
 {
     public partial class Form1 : Form
     {
+
+        /// <summary>
+        /// Valor que representa a Epsilon
+        /// </summary>
+        private const String IDENTIFICADOR_EPSILON = "e";
+
         private String filePath;
 
         public Form1()
@@ -85,8 +91,8 @@ namespace ProyectoCompiladores
             IList<Siguiente> listaFuncionesSiguiente = gramatica.ObtenerFuncionSiguiente(gramaticaSinRecursividad, listaFuncionesPrimero);
 
             // Se llama al método para generar la tabla de símbolos
-            List<TablaSimbolo> tablaSibolos = new List<TablaSimbolo>();
-            gramatica.ObtenerTablaDeSimbolos(gramaticaSinRecursividad, variablesSinRecursividad, terminalesSinRecursividad, listaFuncionesPrimero, listaFuncionesSiguiente, ref tablaSibolos);
+            List<TablaSimbolo> tablaSimbolos = new List<TablaSimbolo>();
+            gramatica.ObtenerTablaDeSimbolos(gramaticaSinRecursividad, variablesSinRecursividad, terminalesSinRecursividad, listaFuncionesPrimero, listaFuncionesSiguiente, ref tablaSimbolos);
 
             
 
@@ -210,6 +216,55 @@ namespace ProyectoCompiladores
             }
 
 
+            // Arma el dataTable para imprimir la tabla de símbolos.
+            DataTable tblSimbolos = new DataTable();
+            
+            tblSimbolos.Columns.Add("VARIABLE", typeof(String));
+
+            foreach (Elemento e in terminalesSinRecursividad)
+            {
+                if (e.Valor != IDENTIFICADOR_EPSILON)
+                {
+                    tblSimbolos.Columns.Add(e.Valor, typeof(String));
+                    //this.dgvTablaSimbolos.DataSource = tblSimbolos;
+                    //MessageBox.Show("");
+                }
+            }
+            tblSimbolos.Columns.Add("$", typeof(String));
+            //this.dgvTablaSimbolos.DataSource = tblSimbolos;
+            //MessageBox.Show("");
+
+            String[] cabecera = tblSimbolos.Columns.Cast<DataColumn>().Select(c => c.ColumnName).ToArray();
+
+            foreach (TablaSimbolo linea in tablaSimbolos)
+            {
+                DataRow row = tblSimbolos.NewRow();
+                row[0] = linea.Variable.Valor;
+
+                for (int i = 1; i < cabecera.Length; i++)
+                {
+                    String producciones = String.Empty;
+                    Posicion posicion = linea.Posiciones.Where(p => p.Terminal.Valor == cabecera[i]).FirstOrDefault() ?? new Posicion();
+                    if (posicion.Producciones != null)
+                    {
+                        foreach (Produccion prod in posicion.Producciones)
+                        {
+                            producciones += String.Join("", prod.Elementos.Select(e => e.Valor)) + " ";
+                        }
+                    }
+                    //producciones = String.Join(" , ", linea.Posiciones.Where(p => p.Terminal.Valor == cabecera[i]).FirstOrDefault().Producciones.ToList()) ?? "";
+                    row[i] = producciones;
+                }
+                tblSimbolos.Rows.Add(row);
+                //this.dgvTablaSimbolos.DataSource = tblSimbolos;
+                //MessageBox.Show("");
+            }
+
+            this.dgvTablaSimbolos.DataSource = tblSimbolos;
+            //MessageBox.Show("");
+
+            this.btnBitacora.Enabled = true;
+
         }
 
         /// <summary>
@@ -229,6 +284,12 @@ namespace ProyectoCompiladores
                                                                           "090-13-9241"
                                                                         });
             MessageBox.Show(info, "Información del desarrollador", MessageBoxButtons.OK);
+        }
+
+        private void btnBitacora_Click(object sender, EventArgs e)
+        {
+            Bitacora bitacora = new Bitacora();
+            bitacora.ShowDialog();
         }
     }
 }

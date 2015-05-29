@@ -11,6 +11,9 @@ namespace ProyectoCompiladores
     class Gramatica
     {
 
+        /// <summary>
+        /// Valor que representa a Epsilon
+        /// </summary>
         private const String IDENTIFICADOR_EPSILON = "e";
 
         /// <summary>
@@ -449,9 +452,21 @@ namespace ProyectoCompiladores
 
                 // Itera por cada terminal de la funcion primero para esa variable.
                 foreach (Elemento terminal in listaFuncionesPrimero.Where(fp => fp.Variable.Valor == variable.Valor).FirstOrDefault().Terminales)
+                //foreach(Elemento terminal in terminalesSinRecursividad)
                 {
                     Posicion posicion = new Posicion();
                     List<Produccion> producciones = new List<Produccion>();
+
+                    //if (!listaFuncionesPrimero.Where(fp => fp.Variable.Valor == variable.Valor).FirstOrDefault().Terminales.Select(t => t.Valor).Contains(terminal.Valor))
+                    //{
+                    //    if (terminal.Valor != IDENTIFICADOR_EPSILON)
+                    //    {
+                    //        posicion.Terminal = terminal;
+                    //        posicion.Producciones = producciones;
+                    //        lineaTablaSimbolo.Posiciones.Add(posicion);
+                    //    }
+                    //    continue;
+                    //}
 
                     // Si contiene epsilon, obtiene todas las producciones que producen epsilon y las añade a nuevas posiciones por cada
                     // terminal que se encuentre en funcion siguiente para la variable actual
@@ -465,7 +480,7 @@ namespace ProyectoCompiladores
                                 producciones.Add(produccionGramatica);
                             }
                         }
-                        // Añade las posiciones a la tabla de simbolos por cada 
+                        // Añade las posiciones a la tabla de simbolos por cada terminal de la función siguiente
                         foreach (Elemento elementoFuncionSiguiente in listaFuncionesSiguiente.Where(fs => fs.Variable.Valor == variable.Valor).FirstOrDefault().Terminales)
                         {
                             posicion = new Posicion();

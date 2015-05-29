@@ -12,3 +12,4 @@ C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoComp
 C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Form1.resources
 C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Properties.Resources.resources
 C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.csproj.GenerateResource.Cache
+C:\Users\usuario\Desktop\Proyecto Compiladores\ProyectoCompiladores\ProyectoCompiladores\obj\x86\Debug\ProyectoCompiladores.Bitacora.resources
