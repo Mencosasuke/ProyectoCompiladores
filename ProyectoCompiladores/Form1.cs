@@ -227,7 +227,7 @@ namespace ProyectoCompiladores
             // Arma el dataTable para imprimir la tabla de símbolos.
             DataTable tblSimbolos = new DataTable();
             
-            tblSimbolos.Columns.Add("VARIABLE", typeof(String));
+            tblSimbolos.Columns.Add(" ", typeof(String));
 
             foreach (Elemento e in terminalesSinRecursividad)
             {

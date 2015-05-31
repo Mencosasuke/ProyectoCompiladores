@@ -76,12 +76,14 @@ namespace ProyectoCompiladores
             String caracter = String.Empty;
             // Tope de la pila de elementos
             Elemento variable = new Elemento();
-            // Produccion que da origen el caracter evaluado para la variable evaluada
+            // Posicion que da origen el caracter evaluado para la variable evaluada
+            Posicion posicion = new Posicion();
+            // Produccion contenida en la posicion
             Produccion produccion = new Produccion();
             // Variable produccion auxiliar a imprimir en columna de producciones
             String produccionImprimir = String.Empty;
             // Flag para saber si la cadena es valida o no
-            Boolean flag;
+            Boolean flag = false;
 
             do
             {
@@ -124,8 +126,14 @@ namespace ProyectoCompiladores
                     }
                 }
 
-                // Se obtiene la produccion que se produce con la variable actual para la terminal evaluada en ese momento
-                produccion = tablaSimbolos.Where(ts => ts.Variable.Valor == variable.Valor).FirstOrDefault().Posiciones.Where(p => p.Terminal.Valor == caracter).FirstOrDefault().Producciones.FirstOrDefault();
+                // Se obtiene la posicion en la tabla que se produce con la variable actual para la terminal evaluada en ese momento
+                posicion = tablaSimbolos.Where(ts => ts.Variable.Valor == variable.Valor).FirstOrDefault().Posiciones.Where(p => p.Terminal.Valor == caracter).FirstOrDefault();
+
+                // Se obtiene la primer produccion de dicha posicion
+                if (posicion != null)
+                {
+                    produccion = posicion.Producciones.FirstOrDefault();
+                }
 
                 // Si no existe la produccion, la cadena es invalida
                 if (produccion == null)
@@ -155,13 +163,15 @@ namespace ProyectoCompiladores
                     }
                 }
 
-
-                //
                 // Se inserta la nueva fila a la tabla
                 tblBitacora.Rows.Add(String.Join("  ", pila.Select(p => p.Valor)), String.Join("  ", cadena), produccionImprimir ?? "-");
                 this.dgvBitacora.DataSource = tblBitacora;
 
-            } while (pila.Peek().Valor != cadena.Last().ToString());
+            } while (!flag);
+
+            String resultadoCadena = flag ? "LA CADENA ES VALIDA" : "LA CADENA ES INVALIDA";
+
+            MessageBox.Show(resultadoCadena, "Resultado Validacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
             this.dgvBitacora.DataSource = tblBitacora;
 
