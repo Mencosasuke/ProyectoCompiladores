@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProyectoCompiladores
 {
-    class Posicion
+    public class Posicion
     {
         public Posicion()
         {

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProyectoCompiladores
 {
-    class Elemento
+    public class Elemento
     {
         /// <summary>
         /// Instancia de la clase Elemento

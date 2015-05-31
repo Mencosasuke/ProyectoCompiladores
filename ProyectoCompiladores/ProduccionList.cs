@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProyectoCompiladores
 {
-    class ProduccionList
+    public class ProduccionList
     {
         /// <summary>
         /// Instancia de la calse

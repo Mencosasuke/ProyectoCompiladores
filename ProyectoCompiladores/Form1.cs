@@ -18,6 +18,14 @@ namespace ProyectoCompiladores
         /// </summary>
         private const String IDENTIFICADOR_EPSILON = "e";
 
+        /// <summary>
+        /// Tabla de símbolos
+        /// </summary>
+        private List<TablaSimbolo> tablaSimbolos = new List<TablaSimbolo>();
+
+        /// <summary>
+        /// Ruta del archivo cargado
+        /// </summary>
         private String filePath;
 
         public Form1()
@@ -37,7 +45,6 @@ namespace ProyectoCompiladores
             if (archivo.ShowDialog() == DialogResult.OK){
                 filePath = archivo.FileName;
                 this.txtPath.Text = filePath;
-                this.btnEjecutar.Enabled = true;
             }
         }
 
@@ -49,6 +56,8 @@ namespace ProyectoCompiladores
         private void btnEjecutar_Click(object sender, EventArgs e)
         {
             this.organizarInformacionGramatica(filePath);
+            this.btnEjecutar.Enabled = false;
+            this.btnBitacora.Enabled = true;
         }
 
         /// <summary>
@@ -91,8 +100,7 @@ namespace ProyectoCompiladores
             IList<Siguiente> listaFuncionesSiguiente = gramatica.ObtenerFuncionSiguiente(gramaticaSinRecursividad, listaFuncionesPrimero);
 
             // Se llama al método para generar la tabla de símbolos
-            List<TablaSimbolo> tablaSimbolos = new List<TablaSimbolo>();
-            gramatica.ObtenerTablaDeSimbolos(gramaticaSinRecursividad, variablesSinRecursividad, terminalesSinRecursividad, listaFuncionesPrimero, listaFuncionesSiguiente, ref tablaSimbolos);
+            gramatica.ObtenerTablaDeSimbolos(gramaticaSinRecursividad, variablesSinRecursividad, terminalesSinRecursividad, listaFuncionesPrimero, listaFuncionesSiguiente, ref this.tablaSimbolos);
 
             
 
@@ -263,8 +271,6 @@ namespace ProyectoCompiladores
             this.dgvTablaSimbolos.DataSource = tblSimbolos;
             //MessageBox.Show("");
 
-            this.btnBitacora.Enabled = true;
-
         }
 
         /// <summary>
@@ -288,8 +294,28 @@ namespace ProyectoCompiladores
 
         private void btnBitacora_Click(object sender, EventArgs e)
         {
-            Bitacora bitacora = new Bitacora();
+            Bitacora bitacora = new Bitacora(tablaSimbolos);
             bitacora.ShowDialog();
+        }
+
+        private void txtPath_TextChanged(object sender, EventArgs e)
+        {
+            this.limpiarComponentes();
+        }
+
+        /// <summary>
+        /// Método para limpiar todos los controles del formulario
+        /// </summary>
+        private void limpiarComponentes()
+        {
+            this.txtGramaticaRecursiva.Text = "";
+            this.txtGramaticaInformacion.Text = "";
+            this.txtGramaticaSinRecursividad.Text = "";
+            this.txtFuncionesPrimero.Text = "";
+            this.txtFuncionSiguiente.Text = "";
+            this.dgvTablaSimbolos.DataSource = null;
+            this.btnBitacora.Enabled = false;
+            this.btnEjecutar.Enabled = true;
         }
     }
 }

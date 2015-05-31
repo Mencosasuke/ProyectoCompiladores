@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.txtPath = new System.Windows.Forms.TextBox();
             this.txtGramaticaRecursiva = new System.Windows.Forms.TextBox();
@@ -35,7 +36,6 @@
             this.btnEjecutar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnInfo = new System.Windows.Forms.Button();
             this.txtGramaticaSinRecursividad = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtFuncionesPrimero = new System.Windows.Forms.TextBox();
@@ -45,15 +45,16 @@
             this.dgvTablaSimbolos = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.btnBitacora = new System.Windows.Forms.Button();
+            this.btnInfo = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTablaSimbolos)).BeginInit();
             this.SuspendLayout();
             // 
             // btnBuscar
             // 
             this.btnBuscar.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnBuscar.Location = new System.Drawing.Point(302, 7);
+            this.btnBuscar.Location = new System.Drawing.Point(288, 7);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(103, 28);
+            this.btnBuscar.Size = new System.Drawing.Size(124, 37);
             this.btnBuscar.TabIndex = 0;
             this.btnBuscar.Text = "Buscar Archivo";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -62,11 +63,13 @@
             // txtPath
             // 
             this.txtPath.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.txtPath.Location = new System.Drawing.Point(12, 12);
+            this.txtPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPath.Location = new System.Drawing.Point(12, 14);
             this.txtPath.Name = "txtPath";
             this.txtPath.ReadOnly = true;
-            this.txtPath.Size = new System.Drawing.Size(270, 20);
+            this.txtPath.Size = new System.Drawing.Size(270, 22);
             this.txtPath.TabIndex = 1;
+            this.txtPath.TextChanged += new System.EventHandler(this.txtPath_TextChanged);
             // 
             // txtGramaticaRecursiva
             // 
@@ -96,7 +99,7 @@
             // 
             this.btnEjecutar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnEjecutar.Enabled = false;
-            this.btnEjecutar.Location = new System.Drawing.Point(411, 7);
+            this.btnEjecutar.Location = new System.Drawing.Point(418, 7);
             this.btnEjecutar.Name = "btnEjecutar";
             this.btnEjecutar.Size = new System.Drawing.Size(124, 37);
             this.btnEjecutar.TabIndex = 4;
@@ -123,18 +126,6 @@
             this.label2.Size = new System.Drawing.Size(359, 20);
             this.label2.TabIndex = 6;
             this.label2.Text = "INFORMACION OBTENIDA DE LA GRAMATICA";
-            // 
-            // btnInfo
-            // 
-            this.btnInfo.BackColor = System.Drawing.Color.Transparent;
-            this.btnInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnInfo.Image = global::ProyectoCompiladores.Properties.Resources.info_icon;
-            this.btnInfo.Location = new System.Drawing.Point(541, 7);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(37, 37);
-            this.btnInfo.TabIndex = 8;
-            this.btnInfo.UseVisualStyleBackColor = false;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // txtGramaticaSinRecursividad
             // 
@@ -206,10 +197,20 @@
             // 
             this.dgvTablaSimbolos.AllowUserToAddRows = false;
             this.dgvTablaSimbolos.AllowUserToDeleteRows = false;
+            this.dgvTablaSimbolos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dgvTablaSimbolos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTablaSimbolos.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTablaSimbolos.Location = new System.Drawing.Point(567, 411);
             this.dgvTablaSimbolos.Name = "dgvTablaSimbolos";
             this.dgvTablaSimbolos.ReadOnly = true;
+            this.dgvTablaSimbolos.RowHeadersVisible = false;
             this.dgvTablaSimbolos.Size = new System.Drawing.Size(507, 276);
             this.dgvTablaSimbolos.TabIndex = 15;
             // 
@@ -227,13 +228,25 @@
             // 
             this.btnBitacora.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnBitacora.Enabled = false;
-            this.btnBitacora.Location = new System.Drawing.Point(584, 7);
+            this.btnBitacora.Location = new System.Drawing.Point(548, 7);
             this.btnBitacora.Name = "btnBitacora";
             this.btnBitacora.Size = new System.Drawing.Size(124, 37);
             this.btnBitacora.TabIndex = 17;
             this.btnBitacora.Text = "Validar Cadena";
             this.btnBitacora.UseVisualStyleBackColor = true;
             this.btnBitacora.Click += new System.EventHandler(this.btnBitacora_Click);
+            // 
+            // btnInfo
+            // 
+            this.btnInfo.BackColor = System.Drawing.Color.Transparent;
+            this.btnInfo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnInfo.Image = global::ProyectoCompiladores.Properties.Resources.info_icon;
+            this.btnInfo.Location = new System.Drawing.Point(678, 7);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(37, 37);
+            this.btnInfo.TabIndex = 8;
+            this.btnInfo.UseVisualStyleBackColor = false;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // Form1
             // 

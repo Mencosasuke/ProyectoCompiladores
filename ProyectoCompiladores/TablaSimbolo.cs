@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProyectoCompiladores
 {
-    class TablaSimbolo
+    public class TablaSimbolo
     {
 
         public TablaSimbolo()

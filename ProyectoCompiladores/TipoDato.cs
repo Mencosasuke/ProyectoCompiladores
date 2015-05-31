@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ProyectoCompiladores
 {
-    enum TipoDato
+    public enum TipoDato
     {
         variable,
         terminal
